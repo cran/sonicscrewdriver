@@ -1,5 +1,10 @@
+audioBLAST
+audioRead
+AudioMoth
+av
 bioacoustic
 Codacy
+dBA
 seewave
 tuneR
 ScrewdriveR
@@ -21,6 +26,7 @@ hardRain
 IUPAC
 meanspec
 minMax
+mpeg
 patcog
 rythmicity
 Sarlis
@@ -32,4 +38,8 @@ unif
 Varotsos
 pulseDetection
 sid
+SonicScrewdriveR
 uncalibrated
+getSunlightTimes
+parseFilename
+suncalc
