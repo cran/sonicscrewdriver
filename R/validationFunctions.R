@@ -60,12 +60,21 @@ validateKelvin <- function(T) {
 #' Helper function to test that the input is a Wave object. Will create an error if not.
 #'
 #' @param wave Object to test
+#' @importFrom methods is
 #' @export
 #'
 validateIsWave <- function(wave) {
-  if (typeof(wave) != "S4" | class(wave) != "Wave") {
+  if (!inherits(wave, "Wave") | !is(wave, "Wave")) {
     stop("Expecting a Wave object")
   }
+  return(wave)
+}
+
+validateIsWaveMC <- function(wave) {
+  if (!inherits(wave, "WaveMC") | !is(wave, "WaveMC")) {
+    stop("Expecting a WaveMC object")
+  }
+  return(wave)
 }
 
 validateFreq <- function(f) {
@@ -145,9 +154,9 @@ validateDutyCycle <- function(dc) {
 
 validateSpectrum <- function(s, coerceNegative=FALSE, coerceNA = TRUE) {
   if (typeof(s) != "double") {
-    stop("Spectrum must be double")
+    stop("Spectrum must be double.")
   }
-  if (class(s) != "matrix") {
+  if (!is(s, "matrix")) {
     stop("Spectrum must be a matrix.")
   }
   if (ncol(s) != 2) {
@@ -158,9 +167,6 @@ validateSpectrum <- function(s, coerceNegative=FALSE, coerceNA = TRUE) {
   }
   for (i in 1:nrow(s)) {
     for (j in 1:2) {
-      if (!is.numeric(s[i,j])) {
-        stop("All values in sepctrum must be numeric.")
-      }
       if (is.na(s[[i,j]])) {
         if (coerceNA) {
           if (j==2) {
@@ -183,6 +189,8 @@ validateSpectrum <- function(s, coerceNegative=FALSE, coerceNA = TRUE) {
 }
 
 validateComparableSpectra <- function(s1, s2) {
+  validateSpectrum(s1)
+  validateSpectrum(s2)
   if (nrow(s1) != nrow(s2)) {
     stop("Spectra must have equal number of rows.")
   }

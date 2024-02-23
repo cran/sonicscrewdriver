@@ -6,7 +6,7 @@
 \usage{
 dayPhase(
   time = Sys.time(),
-  duration = 2e+05,
+  duration = 40000,
   lat = 50.1,
   lon = 1.83,
   tz = "UTC"
@@ -30,8 +30,4 @@ Data frame of day phases with absolute timestamps and relative times within file
 Given a start time and (optionally) a duration returns the phase of day at a given
 location. This is primarily used to calculate phase of day information for soundscape
 recording projects.
-}
-\examples{
-dayPhase <- function(time=Sys.time(), duration=200000, lat=50.1, lon=1.83, tz="UTC")
-
 }

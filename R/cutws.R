@@ -1,6 +1,7 @@
 #' Cut wave by samples
 #'
-#' Extract a section of a Wave object based on sample positions
+#' Extract a section of a Wave object based on sample positions. This function
+#' will automatically detect if a Wave object is stereo.
 #'
 #' @param wave A Wave object
 #' @param from First sample to return
@@ -14,12 +15,10 @@
 #' cutws(sheep, 1, 20, plot=TRUE)
 #' }
 #'
-cutws <- function(wave, from, to, plot=FALSE) {
+cutws <- function(wave, from=1, to=Inf, plot=FALSE) {
+  validateIsWave(wave)
   if (is.infinite(to)) {
-    to <- length(wave@left)
-  }
-  if (typeof(wave) != "S4" | class(wave) != "Wave") {
-    stop("cutws expects a Wave object")
+    to <- length(wave)
   }
   if (!is.numeric(from) | !is.numeric(to) | !(as.integer(from)==from) | !(as.integer(to) == to)) {
     stop("In cutws both from and to must be integers")
@@ -27,7 +26,12 @@ cutws <- function(wave, from, to, plot=FALSE) {
   if (from > to){
     stop("In cutws to must be greater than from")
   }
-  cutwave <- tuneR::Wave(wave@left[from:to], samp.rate=wave@samp.rate, bit=wave@bit)
+  if (wave@stereo) {
+    cutwave <- tuneR::Wave(wave@left[from:to], right=wave@right[from:to], samp.rate=wave@samp.rate, bit=wave@bit)
+  } else {
+    cutwave <- tuneR::Wave(wave@left[from:to], samp.rate=wave@samp.rate, bit=wave@bit)
+  }
+
   if (plot) {
     seewave::oscillo(wave)
     graphics::abline(v=sDuration(c(from,to), wave=wave), col="red", lty=2)

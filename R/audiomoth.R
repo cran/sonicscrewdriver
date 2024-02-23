@@ -8,10 +8,10 @@
 #' @importFrom utils read.csv
 #' @examples
 #' \dontrun{
-#' audiomoth_config("./CONFIG.TXT")
+#' audiomothConfig("./CONFIG.TXT")
 #' }
 #'
-audiomoth_config <- function(filename) {
+audiomothConfig <- function(filename) {
   f <- readLines(filename)
   c <- read.csv(textConnection(sub(":", "|", f)), header=FALSE, sep="|")
   c[,1] <- trimws(c[,1])
@@ -29,20 +29,21 @@ audiomoth_config <- function(filename) {
 #' @export
 #' @examples
 #' \dontrun{
-#' audiomoth_wavew("./FILENAME.WAV")
+#' audiomothWave("./FILENAME.WAV")
 #' }
 #'
-audiomoth_wave <- function(filename) {
-  f <- readBin(filename, "character", n=15L)
-  raw <- f[15]
-  if (regexpr("Recorded", raw) != 1) {
-    print("No audiomoth comment field found.")
-    return(FALSE)
+audiomothWave <- function(filename) {
+  f <- readBin(filename, "character", n=60L)
+  raw <- f[grep("Recorded", f, useBytes = TRUE)]
+
+  if (length(raw)==0) {
+    return(list())
   }
+
   r <- regexpr("[0-2][0-9]:[0-6][0-9]:[0-6][0-9]", raw)
   start_time <- substr(raw, r, r+attr(r, "match.length")-1)
 
-  r <- regexpr("[0-3][1-9]/[0-1][0-9]/[0-9]{4}", raw)
+  r <- regexpr("[0-3][0-9]/[0-1][0-9]/[0-9]{4}", raw)
   start_date <- substr(raw, r, r+attr(r, "match.length")-1)
 
   r <- regexpr("\\(", raw)
@@ -63,6 +64,13 @@ audiomoth_wave <- function(filename) {
   } else {
     r <- regexpr("[0-9].[0-9]V", raw)
     voltage <- substr(raw, r, r+2)
+  }
+
+  r <- regexpr("[-+]?[0-9]+[\\.]+[0-9]+[C]", raw)
+  if (r != -1) {
+    temp <- substr(raw, r, r+attr(r, "match.length")-2)
+  } else {
+    temp <- NA
   }
 
   r <- regexpr("using external microphone", raw)
@@ -115,6 +123,7 @@ audiomoth_wave <- function(filename) {
     "serial" = serial,
     "gain" = gain,
     "voltage" = voltage,
+    "temperature" = temp,
     "external_mic" = external_mic,
     "filter" = filter,
     "filter.limit" = filter_limit,

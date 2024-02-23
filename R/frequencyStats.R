@@ -19,9 +19,7 @@ frequencyStats <- function(
   lowcut=1,
   plot=FALSE
 ) {
-  if (!typeof(wave) == "S4" | !class(wave) == "Wave") {
-    stop("frequencyStats expects a Wave object")
-  }
+  validateIsWave(wave)
   if (is.null(wave_spec)) {
     wave_spec <- seewave::meanspec(wave, norm=FALSE, plot=FALSE)
   }
@@ -68,10 +66,10 @@ frequencyStats <- function(
 
   if(warn) {
     if (min_3 >= max_3) {
-      warning("-3dB: calculated max greater than min")
+      warning("-3dB: calculated max greater than or equal to min")
     }
     if (min_10 >= max_10) {
-      warning("-10dB: calculated max greater than min")
+      warning("-10dB: calculated max greater than or equal to min")
     }
   }
 

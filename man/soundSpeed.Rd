@@ -4,9 +4,21 @@
 \alias{soundSpeed}
 \title{Calculate the speed of sound in a medium}
 \usage{
-soundSpeed(wl = NULL, f = NULL, bulkModulus = NULL, density = NULL)
+soundSpeed(
+  medium = NULL,
+  method = NULL,
+  wl = NULL,
+  f = NULL,
+  bulkModulus = NULL,
+  density = NULL,
+  ...
+)
 }
 \arguments{
+\item{medium}{Propagation medium (e.g. "air"), or "all" to return a list of all available media.}
+
+\item{method}{Use a specific method to calculate the speed of sound (see Details).}
+
 \item{wl}{Wavelength}
 
 \item{f}{Frequency}
@@ -14,8 +26,45 @@ soundSpeed(wl = NULL, f = NULL, bulkModulus = NULL, density = NULL)
 \item{bulkModulus}{Bulk modulus}
 
 \item{density}{Density}
+
+\item{...}{Additional parameters passed to the method.}
 }
 \description{
 Given sufficient parameters (i.e. wavelength and frequency, bulk modulus and density) this
 function calculates the speed of sound.
+}
+\details{
+The speed of sound can be calculated using the following methods:
+\itemize{
+\item \strong{cramer} Uses the method described in \insertCite{cramer1993;textual}{sonicscrewdriver}.
+Additional parameters are:
+\itemize{
+\item temp Temperature
+\item temp.unit Temperature unit
+\item pressure Pressure
+\item pressure.unit Pressure unit
+\item RH Relative humidity
+\item MoleFracCO2 Mole fraction of CO2
+}
+\item \strong{seewave} Delegates the calculation of the speed of sound in air to the
+package \code{seewave} \insertCite{seewave2008}{sonicscrewdriver}. This calculation is
+.  performed as \eqn{\text{speed} = 331.4 + 0.6 \times \text{temp}}.
+Additional parameters are:
+\itemize{
+\item temp Temperature
+}
+}
+}
+\examples{
+soundSpeed(medium="air")
+soundSpeed(medium="sea water")
+
+soundSpeed(method="cramer", temp=14, pressure=3, RH=10)
+soundSpeed(method="cramer", temp=14, temp.unit="C", pressure=3, pressure.unit="kPa", RH=10)
+
+t <- 1:30
+s <- lapply(t, \(x){soundSpeed(method="cramer", temp=x)})
+}
+\references{
+\insertAllCited{}
 }

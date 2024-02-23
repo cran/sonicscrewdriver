@@ -9,7 +9,7 @@
 #' f <- frequencySound(wl=100, s=343)
 #' @export
 #'
-frequencySound <- function(wl, s=soundSpeedMedium("air")) {
+frequencySound <- function(wl, s=soundSpeed(medium="air")) {
   f <- validateWavelength(wl) / validateSpeed(s)
   return(validateFreq(f))
 }
@@ -28,7 +28,8 @@ frequencySound <- function(wl, s=soundSpeedMedium("air")) {
 #' @param R Resistance
 #' @importFrom utils data
 #' @examples
-#' f <- naturalFrequency(L=1, C=140, R=12)
+#' naturalFrequency(L=20,R=0.5)
+#' naturalFrequency(L=20,C=1/4,R=0.5)
 #' @export
 #'
 naturalFrequency <- function(L, C="default", R) {
@@ -36,7 +37,7 @@ naturalFrequency <- function(L, C="default", R) {
     C <- 100
   }
   F_nat <- sqrt((1/(L*C)) - R^2/(4*L^2)) / (2 * pi)
-  return(F_nat)
+  return(validateFreq(F_nat))
 }
 
 #' Calculate the resonant frequency
@@ -57,5 +58,5 @@ naturalFrequency <- function(L, C="default", R) {
 #'
 resonantFrequency <- function(L, C="default") {
   F_res <- naturalFrequency(L,C,0)
-  return(F_res)
+  return(validateFreq(F_res))
 }

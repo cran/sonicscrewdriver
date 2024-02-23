@@ -4,7 +4,7 @@
 \alias{typicalVolume}
 \title{Typical volumes}
 \usage{
-typicalVolume(thing = "")
+typicalVolume(thing = NA_character_)
 }
 \arguments{
 \item{thing}{Volume of thing, if missing then returns all volumes}
@@ -17,6 +17,6 @@ Typical volumes of everyday things.
 }
 \examples{
 typicalVolume()
-typicalVolume("rocket")
+typicalVolume("rocket launch")
 
 }

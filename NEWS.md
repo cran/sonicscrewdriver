@@ -1,3 +1,27 @@
+# sonicscrewdriver 0.0.5
+
+## New functions
+- use BirdNET-Analyzer within R using reticulate
+- readAudio() generic function to read audio files
+- readAudacityLabels() to read Audacity label files
+- citation() information
+- angle conversion
+- Dolbear's law
+- audioblast() - search for recordings and analyses on audioblast.org
+- audioblastDownload() - Download files from audioBlast
+- allChannels for analysing multi-channel audio
+- read Respeaker6 formatted files
+
+## New classes
+- Annotation class (recording and manipulating annotations)
+- PseudoWave class (e.g. apply noise to a file of any length)
+- TaggedWaves class (document metadata and processing)
+- WaveFilter class (supports applying filters using pipes)
+
+## Fixes
+- audiomothWave() fix (comments not consistently placed in header)
+
+
 # sonicscrewdriver 0.0.4
 
 - support for reading AudioMoth configuration files
