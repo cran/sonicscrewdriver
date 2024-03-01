@@ -1,3 +1,10 @@
+# sonicscrewdriver 0.0.6
+
+## Fixes
+- issued identified on Win build
+- convert2seconds() where numeric value < 1000 passed as HHMM.
+
+
 # sonicscrewdriver 0.0.5
 
 ## New functions
